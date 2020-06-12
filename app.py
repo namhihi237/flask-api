@@ -24,7 +24,7 @@ def hi():
 def api():
 
     data = request.get_json()  # [{},{},{}]
-    data = data['input']
+    data = data['inputA']
     # handle data
     input_data = np.empty((0, 4))
     for item in data:
@@ -34,15 +34,12 @@ def api():
 
     input_data.reshape(-1, 12, 4)
     input_data = input_data.min(axis=0).reshape(-1, 4)
-    print("load")
     modelfile = 'model_tree/tree3.pickle'
     with open(modelfile, "rb") as f:
         object = p.load(f)
-
-    print("load ok")
     a = object.predict(input_data)
-    print(a)
     prediction = a[0]
+    print(prediction)
     return {"result": prediction}
 
 
@@ -51,8 +48,6 @@ def apiv1():
     # get data from request
     data = request.get_json()
     data = data['input']
-    # handle data
-    # print(data)
     input_data = np.empty((0, 3))
     for item in data:
         list_values = [v for v in item.values()]
@@ -60,10 +55,9 @@ def apiv1():
         input_data = np.concatenate((input_data, x), axis=0)
 
     X0 = input_data
-    print(X0)
+    # print(X0)
     # try:
     with tf.compat.v1.Session() as sess:
-        print("a")
         sess.run(tf.compat.v1.global_variables_initializer())
         saver = tf.compat.v1.train.import_meta_graph("models/model.ckpt.meta")
         save_path = saver.restore(sess, "models/model.ckpt")
@@ -73,8 +67,6 @@ def apiv1():
         X_batches = X0.reshape(-1, n_layers, n_inputs)
 
         y_pred = sess.run(get, feed_dict={X: X_batches})
-        print("ok")
-
         print(y_pred)
         return {"result": str(y_pred[-1][-1][-1])}
 
