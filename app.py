@@ -25,6 +25,7 @@ def api():
 
     data = request.get_json()  # [{},{},{}]
     data = data['inputA']
+    print(data);
     # handle data
     input_data = np.empty((0, 4))
     for item in data:
@@ -33,7 +34,9 @@ def api():
         input_data = np.concatenate((input_data, x), axis=0)
 
     input_data.reshape(-1, 12, 4)
-    input_data = input_data.min(axis=0).reshape(-1, 4)
+    input_data = input_data.mean(axis=0).reshape(-1, 4)
+    if input_data[0, 3] >0: input_data[0, 3] = 1 
+    print(input_data);
     modelfile = 'model_tree/tree3.pickle'
     with open(modelfile, "rb") as f:
         object = p.load(f)
