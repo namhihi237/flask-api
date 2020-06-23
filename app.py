@@ -19,6 +19,7 @@ def hi():
     print('hi')
     return 'hello'
 # api a
+# ok ne
 
 @app.route('/api/v1/rain', methods=['POST'])
 def api():
