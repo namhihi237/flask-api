@@ -18,7 +18,7 @@ object = Decision_Tree()
 def hi():
     print('hi')
     return 'hello'
-# api
+# api a
 
 @app.route('/api/v1/rain', methods=['POST'])
 def api():
